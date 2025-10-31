@@ -101,18 +101,17 @@ const ScanForm = () => {
   }, [numeroBL, isProcessing, handleScanComplete]);
 
   return (
-    <div
-  style={{
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    paddingTop: "20vh",
-    backgroundColor: "#ffffff", 
-    position: "relative",
-  }}
->
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      paddingTop: "20vh",
+      paddingBottom: "120px", // espace pour instructions
+      backgroundColor: "#ffffff",
+      position: "relative"
+    }}>
   {message && (
     <Message
       type={message.type}
@@ -208,7 +207,7 @@ const ScanForm = () => {
   {/* Instructions */}
   <div
     style={{
-      position: "absolute",
+      position: "fixed",
       bottom: "30px",
       textAlign: "center",
       color: "#6c757d",
