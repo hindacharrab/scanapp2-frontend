@@ -186,6 +186,20 @@ const ScanForm = () => {
           >
             {isProcessing ? "Envoi..." : "Valider"}
           </Button>
+          <Button
+    variant="secondary"
+    onClick={() => handleScanComplete("1234567890")}
+    style={{
+      width: "180px",
+      height: "50px",
+      fontSize: "1.1rem",
+      fontWeight: "600",
+      borderRadius: "10px",
+      marginTop: "15px",
+    }}
+  >
+    Simuler Scan
+  </Button>
         </form>
       </div>
 
