@@ -188,7 +188,7 @@ const ScanForm = () => {
           </Button>
           <Button
     variant="secondary"
-    onClick={() => handleScanComplete("1234567890")}
+    onClick={() => handleScanComplete(" BL209982")}
     style={{
       width: "180px",
       height: "50px",
