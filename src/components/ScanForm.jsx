@@ -144,7 +144,7 @@ const ScanForm = () => {
         type="text"
         ref={inputRef}
         value={numeroBL}
-        readOnly
+       readOnly
         onKeyDown={(e) => e.preventDefault()}
         onKeyPress={(e) => e.preventDefault()}
         onKeyUp={(e) => e.preventDefault()}
