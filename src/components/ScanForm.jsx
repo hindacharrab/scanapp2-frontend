@@ -21,7 +21,7 @@ const ScanForm = () => {
   useEffect(() => {
     inputRef.current?.focus();
     document.body.style.margin = "0";
-    document.body.style.backgroundColor = "#f5f7fa";
+    document.body.style.backgroundColor = "#f4f6f8";
     return () => {
       document.body.style.backgroundColor = "";
     };
@@ -34,22 +34,31 @@ const ScanForm = () => {
     inputRef.current?.focus();
   }, []);
 
-  const handleScanComplete = useCallback(async (scannedValue) => {
-    if (!scannedValue || isProcessing) return;
-    setIsProcessing(true);
-    setNumeroBL(scannedValue);
+  const handleScanComplete = useCallback(
+    async (scannedValue) => {
+      if (!scannedValue || isProcessing) return;
+      setIsProcessing(true);
+      setNumeroBL(scannedValue);
 
-    try {
-      const result = await sendScan(scannedValue);
-      setMessage({ type: "success", text: result.Message || "Scan enregistré avec succès ✅" });
-      setShowMessage(true);
-      setTimeout(resetScan, SUCCESS_TOAST_DURATION);
-    } catch (err) {
-      setMessage({ type: "danger", text: err.Message || err.message || "Erreur lors du scan ❌" });
-      setShowMessage(true);
-      setTimeout(resetScan, ERROR_TOAST_DURATION);
-    }
-  }, [isProcessing, resetScan]);
+      try {
+        const result = await sendScan(scannedValue);
+        setMessage({
+          type: "success",
+          text: result.Message || "✅ Scan enregistré avec succès",
+        });
+        setShowMessage(true);
+        setTimeout(resetScan, SUCCESS_TOAST_DURATION);
+      } catch (err) {
+        setMessage({
+          type: "danger",
+          text: err.Message || err.message || "❌ Erreur lors du scan",
+        });
+        setShowMessage(true);
+        setTimeout(resetScan, ERROR_TOAST_DURATION);
+      }
+    },
+    [isProcessing, resetScan]
+  );
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -89,10 +98,9 @@ const ScanForm = () => {
       style={{
         minHeight: "100vh",
         display: "flex",
-        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(180deg, #f8fafc 0%, #eef1f5 100%)",
+        backgroundColor: "#f4f6f8",
         padding: "20px",
       }}
     >
@@ -102,7 +110,11 @@ const ScanForm = () => {
           text={message.text}
           show={showMessage}
           onClose={resetScan}
-          duration={message.type === "success" ? SUCCESS_TOAST_DURATION : ERROR_TOAST_DURATION}
+          duration={
+            message.type === "success"
+              ? SUCCESS_TOAST_DURATION
+              : ERROR_TOAST_DURATION
+          }
         />
       )}
 
@@ -117,8 +129,15 @@ const ScanForm = () => {
           textAlign: "center",
         }}
       >
-        <h2 style={{ marginBottom: "25px", color: "#0d6efd", fontWeight: 600 }}>
-          📦 Scanner un Code-Barres
+        <h2
+          style={{
+            marginBottom: "25px",
+            color: "#0d6efd",
+            fontWeight: 600,
+            fontSize: "1.6rem",
+          }}
+        >
+          Scanner un Code-Barres
         </h2>
 
         <form onSubmit={handleSubmit}>
@@ -137,19 +156,18 @@ const ScanForm = () => {
               border: numeroBL
                 ? "2px solid #198754"
                 : isProcessing
-                ? "2px solid #ffc107"
+                ? "2px solid #0d6efd"
                 : "2px solid #ced4da",
               backgroundColor: "#f9fafb",
               color: "#212529",
               textAlign: "center",
-              marginBottom: "20px",
+              marginBottom: "18px",
               transition: "all 0.3s ease",
               outline: "none",
-              boxShadow: numeroBL
-                ? "0 0 6px rgba(25,135,84,0.3)"
-                : isProcessing
-                ? "0 0 6px rgba(255,193,7,0.3)"
-                : "none",
+              boxShadow:
+                numeroBL || isProcessing
+                  ? "0 0 8px rgba(13,110,253,0.15)"
+                  : "none",
             }}
           />
 
@@ -158,11 +176,15 @@ const ScanForm = () => {
               height: "24px",
               marginBottom: "20px",
               fontSize: "0.95rem",
-              color: isProcessing ? "#ffc107" : numeroBL ? "#198754" : "#6c757d",
+              color: isProcessing ? "#0d6efd" : numeroBL ? "#198754" : "#6c757d",
               fontWeight: 500,
             }}
           >
-            {isProcessing ? "⏳ Traitement en cours..." : numeroBL ? "✓ Code détecté" : "En attente du scan..."}
+            {isProcessing
+              ? "Lecture en cours..."
+              : numeroBL
+              ? "✓ Code détecté"
+              : "En attente du scan..."}
           </div>
 
           <Button
@@ -175,11 +197,13 @@ const ScanForm = () => {
               fontSize: "1.1rem",
               fontWeight: "600",
               borderRadius: "8px",
+              marginBottom: "10px",
             }}
           >
             {isProcessing ? (
               <>
-                <Spinner animation="border" size="sm" className="me-2" /> Envoi...
+                <Spinner animation="border" size="sm" className="me-2" />
+                Envoi...
               </>
             ) : (
               "Valider"
@@ -192,7 +216,6 @@ const ScanForm = () => {
             style={{
               width: "100%",
               height: "46px",
-              marginTop: "12px",
               fontSize: "1rem",
               fontWeight: "500",
               borderRadius: "8px",
@@ -202,18 +225,6 @@ const ScanForm = () => {
           </Button>
         </form>
       </div>
-
-      <footer
-        style={{
-          marginTop: "30px",
-          textAlign: "center",
-          color: "#6c757d",
-          fontSize: "0.9rem",
-        }}
-      >
-        <p style={{ margin: "4px 0" }}>Utilisez votre lecteur pour capturer le code-barres.</p>
-        <p style={{ margin: "4px 0" }}>Le scan se valide automatiquement.</p>
-      </footer>
     </div>
   );
 };
